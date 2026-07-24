@@ -1,26 +1,29 @@
 <UserControl x:Class="FALCONDashboard.Views.MinecraftLogView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Margin="12">
+    <Grid Margin="20" Background="{StaticResource BgBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
-            <TextBlock Text="サーバー:" VerticalAlignment="Center" Foreground="White" Margin="0,0,8,0"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="サーバー:" VerticalAlignment="Center" Foreground="{StaticResource LabelDimBrush}"
+                       FontFamily="{StaticResource UiFont}" Margin="0,0,8,0"/>
             <ComboBox Width="200" ItemsSource="{Binding ServerNames}" SelectedItem="{Binding SelectedServer}"/>
-            <Button Content="一覧を更新" Command="{Binding RefreshServersCommand}" Margin="8,0,0,0" Padding="8,2"/>
+            <Button Content="一覧を更新" Command="{Binding RefreshServersCommand}"
+                    Foreground="{StaticResource AccentBrush}" Background="Transparent"
+                    BorderBrush="{StaticResource AccentDimBrush}" Margin="8,0,0,0" Padding="10,4"/>
         </StackPanel>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <TextBox Text="{Binding LogText, Mode=OneWay}"
                      IsReadOnly="True"
-                     FontFamily="Consolas"
+                     FontFamily="{StaticResource MonoFont}"
                      FontSize="12"
-                     Foreground="#eef1f6"
-                     Background="#0a0c10"
+                     Foreground="{StaticResource TextPrimaryBrush}"
+                     Background="Transparent"
                      BorderThickness="0"
                      TextWrapping="NoWrap"
                      AcceptsReturn="True"
@@ -28,6 +31,7 @@
                      x:Name="LogTextBox"/>
         </ScrollViewer>
 
-        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" Foreground="#ff8a3d" Margin="0,8,0,0"/>
+        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" Foreground="{StaticResource AccentBrush}"
+                   FontFamily="{StaticResource UiFont}" FontSize="11" Margin="0,8,0,0"/>
     </Grid>
 </UserControl>

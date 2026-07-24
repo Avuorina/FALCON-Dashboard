@@ -13,6 +13,14 @@ namespace FALCONDashboard.ViewModels
     {
         public string Sender { get; set; } = "";
         public string Text { get; set; } = "";
+
+        // PWA版と統一した見た目にするため、発言者ごとにプロンプト記号を出す
+        public string Prompt => Sender switch
+        {
+            "隼" => ">",
+            "FALCON" => "FALCON>",
+            _ => "",
+        };
     }
 
     public class ChatViewModel : INotifyPropertyChanged

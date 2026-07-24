@@ -3,13 +3,62 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:FALCONDashboard.Views"
         Title="FALCON Dashboard" Height="600" Width="900"
-        Background="#0a0c10">
-    <TabControl Margin="8">
-        <TabItem Header="チャット">
-            <views:ChatView/>
-        </TabItem>
-        <TabItem Header="Minecraftログ">
-            <views:MinecraftLogView/>
-        </TabItem>
-    </TabControl>
+        Background="{StaticResource BgBrush}"
+        FontFamily="{StaticResource UiFont}">
+    <DockPanel>
+
+        <!-- ★ヘッダーバー★ サインチャー要素。全タブ共通で常時表示 -->
+        <Border DockPanel.Dock="Top" BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,0,1" Padding="20,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="FALCON" FontWeight="Bold" FontSize="18" Foreground="{StaticResource AccentBrush}"/>
+                    <TextBlock Text="DASHBOARD" FontSize="11" Foreground="{StaticResource TextDimBrush}"
+                               VerticalAlignment="Bottom" Margin="10,0,0,3"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Fill="{StaticResource AccentBrush}" Margin="0,0,7,0">
+                        <Ellipse.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0.3" Duration="0:0:1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Ellipse.Triggers>
+                    </Ellipse>
+                    <TextBlock Text="接続中" FontSize="11" Foreground="{StaticResource AccentBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <TabControl>
+            <TabItem Header="チャット">
+                <views:ChatView/>
+            </TabItem>
+            <TabItem Header="Minecraftログ">
+                <views:MinecraftLogView/>
+            </TabItem>
+            <TabItem Header="タスク一覧">
+                <Grid Background="{StaticResource BgBrush}">
+                    <TextBlock Text="準備中" Foreground="{StaticResource TextDimBrush}"
+                               FontFamily="{StaticResource UiFont}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="カレンダー">
+                <Grid Background="{StaticResource BgBrush}">
+                    <TextBlock Text="準備中" Foreground="{StaticResource TextDimBrush}"
+                               FontFamily="{StaticResource UiFont}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
