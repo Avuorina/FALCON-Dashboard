@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -33,7 +34,6 @@ namespace FALCONDashboard.Services
             var json = await _client.GetStringAsync($"/minecraft/{Uri.EscapeDataString(server)}/log?lines={lines}");
             using var doc = JsonDocument.Parse(json);
 
-            // FALCON側が {"error": "..."} を返した場合はここで例外に変換する
             if (doc.RootElement.TryGetProperty("error", out var errorProp))
             {
                 throw new InvalidOperationException(errorProp.GetString());
@@ -43,6 +43,36 @@ namespace FALCONDashboard.Services
                 .EnumerateArray()
                 .Select(e => e.GetString() ?? "")
                 .ToArray();
+        }
+
+        public async Task<(string[] Senders, string[] Texts)> GetHistoryAsync()
+        {
+            var json = await _client.GetStringAsync("/history");
+            using var doc = JsonDocument.Parse(json);
+            var entries = doc.RootElement.GetProperty("history").EnumerateArray().ToArray();
+
+            var senders = entries.Select(e => e.GetProperty("sender").GetString() ?? "").ToArray();
+            var texts = entries.Select(e => e.GetProperty("text").GetString() ?? "").ToArray();
+            return (senders, texts);
+        }
+
+        public async Task<(string Reply, string? AlarmUrl)> SendChatAsync(string message)
+        {
+            var payload = JsonSerializer.Serialize(new { message });
+            var content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("/chat", content);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            string reply = doc.RootElement.GetProperty("reply").GetString() ?? "";
+            string? alarmUrl = doc.RootElement.TryGetProperty("alarm_url", out var a) && a.ValueKind != JsonValueKind.Null
+                ? a.GetString()
+                : null;
+
+            return (reply, alarmUrl);
         }
     }
 }
