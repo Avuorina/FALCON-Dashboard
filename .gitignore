@@ -1,0 +1,14 @@
+## .NET / Visual Studio 標準
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+## ビルド成果物
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
