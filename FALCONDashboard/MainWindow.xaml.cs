@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using FALCONDashboard.ViewModels;
 
 namespace FALCONDashboard
 {
@@ -7,6 +8,7 @@ namespace FALCONDashboard
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ServerControlViewModel();
         }
     }
 }
