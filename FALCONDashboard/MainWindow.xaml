@@ -13,6 +13,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -21,8 +22,24 @@
                                VerticalAlignment="Bottom" Margin="10,0,0,3"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Ellipse Width="8" Height="8" Fill="{StaticResource AccentBrush}" Margin="0,0,7,0">
+                <!-- サーバー起動/停止ボタン: 状態に応じて文言が入れ替わる。処理中(Starting/Stopping)はCanToggleがfalseになり押せない -->
+                <Button Grid.Column="1" Content="{Binding ButtonText}" Command="{Binding ToggleServerCommand}"
+                        Margin="0,0,16,0" Padding="12,6"
+                        Background="{StaticResource AccentFaintBrush}" Foreground="{StaticResource AccentBrush}"
+                        BorderBrush="{StaticResource AccentDimBrush}" BorderThickness="1"/>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Margin="0,0,7,0">
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Fill" Value="{StaticResource TextDimBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsServerRunning}" Value="True">
+                                        <Setter Property="Fill" Value="{StaticResource AccentBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
                         <Ellipse.Triggers>
                             <EventTrigger RoutedEvent="Loaded">
                                 <BeginStoryboard>
@@ -33,7 +50,7 @@
                             </EventTrigger>
                         </Ellipse.Triggers>
                     </Ellipse>
-                    <TextBlock Text="接続中" FontSize="11" Foreground="{StaticResource AccentBrush}"/>
+                    <TextBlock Text="{Binding StatusText}" FontSize="11" Foreground="{StaticResource AccentBrush}"/>
                 </StackPanel>
             </Grid>
         </Border>
